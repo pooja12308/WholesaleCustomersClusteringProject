@@ -107,16 +107,30 @@ if run_clustering:
     # --------------------------------------------------
     # 5️⃣ Cluster Summary Section
     # --------------------------------------------------
-    st.subheader("📋 Cluster Summary")
+  st.subheader("📋 Cluster Summary")
 
-    summary = (
-        df_result
-        .groupby("Cluster")[[feature_1, feature_2]]
-        .agg(["count", "mean"])
-    )
+# Count per cluster
+cluster_counts = df_result.groupby("Cluster").size().reset_index(name="Count")
 
-    summary.columns = ["Count", f"Avg {feature_1}", f"Avg {feature_2}"]
-    st.dataframe(summary)
+# Mean values per cluster
+cluster_means = (
+    df_result
+    .groupby("Cluster")[[feature_1, feature_2]]
+    .mean()
+    .reset_index()
+)
+
+# Merge count and mean
+summary = pd.merge(cluster_counts, cluster_means, on="Cluster")
+
+# Rename columns for clarity
+summary.rename(columns={
+    feature_1: f"Avg {feature_1}",
+    feature_2: f"Avg {feature_2}"
+}, inplace=True)
+
+st.dataframe(summary)
+
 
     # --------------------------------------------------
     # 6️⃣ Business Interpretation Section
