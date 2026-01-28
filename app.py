@@ -107,7 +107,7 @@ if run_clustering:
     # --------------------------------------------------
     # 5️⃣ Cluster Summary Section
     # --------------------------------------------------
-  st.subheader("📋 Cluster Summary")
+    st.subheader("📋 Cluster Summary")
 
 # Count per cluster
 cluster_counts = df_result.groupby("Cluster").size().reset_index(name="Count")
